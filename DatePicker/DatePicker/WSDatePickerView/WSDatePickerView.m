@@ -307,7 +307,8 @@ int minDay(void){
         case 1:
             return _monthArray.count;
         default:
-            return [self DaysfromYear:[_yearArray[yearIndex] integerValue] andMonth:[_monthArray[monthIndex] integerValue]];;
+            [self daysfromYear: [_yearArray[yearIndex] integerValue] andMonth:[_monthArray[monthIndex] integerValue]];
+            return _dayArray.count;
     }
 }
 
@@ -375,7 +376,7 @@ int minDay(void){
         dayIndex = row;
     }
     if (component == 0 || component == 1){
-        [self DaysfromYear:[_yearArray[yearIndex] integerValue] andMonth:[_monthArray[monthIndex] integerValue]];
+        [self daysfromYear: [_yearArray[yearIndex] integerValue] andMonth:[_monthArray[monthIndex] integerValue]];
         if (_dayArray.count-1<dayIndex) {
             dayIndex = _dayArray.count-1;
         }
@@ -494,8 +495,14 @@ int minDay(void){
 }
 
 #pragma mark - tools
+
+
+
 //通过年月求每月天数
-- (NSInteger)DaysfromYear:(NSInteger)year andMonth:(NSInteger)month
+
+
+
+- (void) daysfromYear: (NSInteger)year andMonth: (NSInteger)month
 {
     NSInteger num_year  = year;
     NSInteger num_month = month;
@@ -512,9 +519,11 @@ int minDay(void){
     switch (num_month) {
         case 1:case 3:case 5:case 7:case 8:case 10:case 12:{
             [self setdayArray:31 isCurrent: bullsEye];
+            break;
         }
         case 4:case 6:case 9:case 11:{
             [self setdayArray:30 isCurrent: bullsEye];
+            break;
         }
         case 2:{
             if (isrunNian) {
@@ -522,11 +531,11 @@ int minDay(void){
             }else{
                 [self setdayArray:28 isCurrent: bullsEye];
             }
+            break;
         }
         default:
             break;
     }
-    return _dayArray.count;
 }
 
 
@@ -577,7 +586,7 @@ int minDay(void){
         date = [NSDate date];
     }
     
-    [self DaysfromYear:date.year andMonth:date.month];
+    [self daysfromYear:date.year andMonth:date.month];
     
     yearIndex = date.year - minYEAR();
     monthIndex = date.month-1;
