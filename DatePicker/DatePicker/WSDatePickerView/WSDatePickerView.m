@@ -166,39 +166,9 @@ int minDay(void){
         
         self.datePickerStyle = datePickerStyle;
         self.scrollToDate = scrollToDate;
-        switch (datePickerStyle) {
-            case DateStyleShowYearMonthDayHourMinute:
-                _dateFormatter = @"yyyy-MM-dd HH:mm";
-                break;
-            case DateStyleShowMonthDayHourMinute:
-                _dateFormatter = @"yyyy-MM-dd HH:mm";
-                break;
-            case DateStyleShowYearMonthDay:
-                _dateFormatter = @"yyyy-MM-dd";
-                break;
-            case DateStyleShowYearMonth:
-                _dateFormatter = @"yyyy-MM";
-                break;
-            case DateStyleShowMonthDay:
-                _dateFormatter = @"yyyy-MM-dd";
-                break;
-            case DateStyleShowHourMinute:
-                _dateFormatter = @"HH:mm";
-                break;
-            case DateStyleShowYear:
-                _dateFormatter = @"yyyy";
-                break;
-            case DateStyleShowMonth:
-                _dateFormatter = @"MM";
-                break;
-            case DateStyleShowDayHourMinute:
-                _dateFormatter = @"dd HH:mm";
-                break;
-            default:
-                _dateFormatter = @"yyyy-MM-dd HH:mm";
-                break;
-        }
-        
+    
+        _dateFormatter = @"yyyy-MM-dd";
+            
         [self setupUI];
         [self defaultConfig];
         
@@ -326,37 +296,8 @@ int minDay(void){
 #pragma mark - UIPickerViewDelegate,UIPickerViewDataSource
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
-    switch (self.datePickerStyle) {
-        case DateStyleShowYearMonthDayHourMinute:
-            [self addLabelWithName:@[@"年",@"月",@"日",@"时",@"分"]];
-            return 5;
-        case DateStyleShowMonthDayHourMinute:
-            [self addLabelWithName:@[@"月",@"日",@"时",@"分"]];
-            return 4;
-        case DateStyleShowYearMonthDay:
-            [self addLabelWithName:@[@"年",@"月",@"日"]];
-            return 3;
-        case DateStyleShowYearMonth:
-            [self addLabelWithName:@[@"年",@"月"]];
-            return 2;
-        case DateStyleShowMonthDay:
-            [self addLabelWithName:@[@"月",@"日"]];
-            return 2;
-        case DateStyleShowHourMinute:
-            [self addLabelWithName:@[@"时",@"分"]];
-            return 2;
-        case DateStyleShowYear:
-            [self addLabelWithName:@[@"年"]];
-            return 1;
-        case DateStyleShowMonth:
-            [self addLabelWithName:@[@"月"]];
-            return 1;
-        case DateStyleShowDayHourMinute:
-            [self addLabelWithName:@[@"日",@"时",@"分"]];
-            return 3;
-        default:
-            return 0;
-    }
+    [self addLabelWithName:@[@"年",@"月",@"日"]];
+    return 3;
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
@@ -370,45 +311,7 @@ int minDay(void){
     NSInteger monthNum = _monthArray.count;
     NSInteger dayNum = [self DaysfromYear:[_yearArray[yearIndex] integerValue] andMonth:[_monthArray[monthIndex] integerValue]];
     
-    NSInteger dayNum2 = [self DaysfromYear:[_yearArray[yearIndex] integerValue] andMonth:1];//确保可以选到31日
-    
-    NSInteger hourNum = _hourArray.count;
-    NSInteger minuteNUm = _minuteArray.count;
-    
-    NSInteger timeInterval = MAXYEAR - minYEAR();
-    
-    switch (self.datePickerStyle) {
-        case DateStyleShowYearMonthDayHourMinute:
-            return @[@(yearNum),@(monthNum),@(dayNum),@(hourNum),@(minuteNUm)];
-            break;
-        case DateStyleShowMonthDayHourMinute:
-            return @[@(monthNum*timeInterval),@(dayNum),@(hourNum),@(minuteNUm)];
-            break;
-        case DateStyleShowYearMonthDay:
-            return @[@(yearNum),@(monthNum),@(dayNum)];
-            break;
-        case DateStyleShowYearMonth:
-            return @[@(yearNum),@(monthNum)];
-            break;
-        case DateStyleShowMonthDay:
-            return @[@(monthNum*timeInterval),@(dayNum),@(hourNum)];
-            break;
-        case DateStyleShowHourMinute:
-            return @[@(hourNum),@(minuteNUm)];
-            break;
-        case DateStyleShowYear:
-            return @[@(yearNum)];
-            break;
-        case DateStyleShowMonth:
-            return @[@(monthNum)];
-            break;
-        case DateStyleShowDayHourMinute:
-            return @[@(dayNum2),@(hourNum),@(minuteNUm)];
-            break;
-        default:
-            return @[];
-            break;
-    }
+    return @[@(yearNum),@(monthNum),@(dayNum)];
     
 }
 
@@ -424,99 +327,20 @@ int minDay(void){
         customLabel.textAlignment = NSTextAlignmentCenter;
         [customLabel setFont:[UIFont systemFontOfSize:17]];
     }
-    NSString *title;
-    
-    switch (self.datePickerStyle) {
-        case DateStyleShowYearMonthDayHourMinute:
-            if (component==0) {
-                title = _yearArray[row];
-            }
-            if (component==1) {
-                title = _monthArray[row];
-            }
-            if (component==2) {
-                title = _dayArray[row];
-            }
-            if (component==3) {
-                title = _hourArray[row];
-            }
-            if (component==4) {
-                title = _minuteArray[row];
-            }
-            break;
-        case DateStyleShowYearMonthDay:
-            if (component==0) {
-                title = _yearArray[row];
-            }
-            if (component==1) {
-                title = _monthArray[row];
-            }
-            if (component==2) {
-                title = _dayArray[row];
-            }
-            break;
-        case DateStyleShowYearMonth:
-            if (component==0) {
-                title = _yearArray[row];
-            }
-            if (component==1) {
-                title = _monthArray[row];
-            }
-            break;
-        case DateStyleShowMonthDayHourMinute:
-            if (component==0) {
-                title = _monthArray[row%12];
-            }
-            if (component==1) {
-                title = _dayArray[row];
-            }
-            if (component==2) {
-                title = _hourArray[row];
-            }
-            if (component==3) {
-                title = _minuteArray[row];
-            }
-            break;
-        case DateStyleShowMonthDay:
-            if (component==0) {
-                title = _monthArray[row%12];
-            }
-            if (component==1) {
-                title = _dayArray[row];
-            }
-            break;
-        case DateStyleShowHourMinute:
-            if (component==0) {
-                title = _hourArray[row];
-            }
-            if (component==1) {
-                title = _minuteArray[row];
-            }
-            break;
-        case DateStyleShowYear:
-            if (component==0) {
-                title = _yearArray[row];
-            }
-            break;
-        case DateStyleShowMonth:
-            if (component==0) {
-                title = _monthArray[row];
-            }
-            break;
-        case DateStyleShowDayHourMinute:
-            if (component==0) {
-                title = _dayArray[row];
-            }
-            if (component==1) {
-                title = _hourArray[row];
-            }
-            if (component==2) {
-                title = _minuteArray[row];
-            }
-            break;
-        default:
-            title = @"";
-            break;
+    NSString *title = @"";
+
+    if (component==0) {
+        title = _yearArray[row];
+    }
+    if (component==1) {
+        title = _monthArray[row];
+    }
+    if (component==2) {
+        
+        NSLog(@"1111  %l", _dayArray[row] );
+        
+        
+        title = _dayArray[row];
     }
     
     customLabel.text = title;
@@ -690,42 +514,22 @@ int minDay(void){
     switch (num_month) {
         case 1:case 3:case 5:case 7:case 8:case 10:case 12:{
             [self setdayArray:31 isCurrent: bullsEye];
-            return 31;
         }
         case 4:case 6:case 9:case 11:{
             [self setdayArray:30 isCurrent: bullsEye];
-            return 30;
         }
         case 2:{
             if (isrunNian) {
                 [self setdayArray:29 isCurrent: bullsEye];
-                return 29;
             }else{
                 [self setdayArray:28 isCurrent: bullsEye];
-                return 28;
             }
         }
         default:
             break;
     }
-    return 0;
+    return _dayArray.count;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -737,7 +541,7 @@ int minDay(void){
     for (int i=1; i<=num; i++) {
         if (bullsEye){
             
-            NSLog(@"ha ha ha ");
+         //   NSLog(@"ha ha ha ");
         
             if (minDay() < i){
                 [_dayArray addObject: [NSString stringWithFormat: @"%02d",  i]];
@@ -786,26 +590,8 @@ int minDay(void){
     //循环滚动时需要用到
     preRow = (self.scrollToDate.year - minYEAR())*12+self.scrollToDate.month-1;
     
-    NSArray *indexArray;
+    NSArray *indexArray = @[@(yearIndex),@(monthIndex),@(dayIndex)];
     
-    if (self.datePickerStyle == DateStyleShowYearMonthDayHourMinute)
-        indexArray = @[@(yearIndex),@(monthIndex),@(dayIndex),@(hourIndex),@(minuteIndex)];
-    if (self.datePickerStyle == DateStyleShowYearMonthDay)
-        indexArray = @[@(yearIndex),@(monthIndex),@(dayIndex)];
-    if (self.datePickerStyle == DateStyleShowYearMonth)
-        indexArray = @[@(yearIndex),@(monthIndex)];
-    if (self.datePickerStyle == DateStyleShowMonthDayHourMinute)
-        indexArray = @[@(monthIndex),@(dayIndex),@(hourIndex),@(minuteIndex)];
-    if (self.datePickerStyle == DateStyleShowMonthDay)
-        indexArray = @[@(monthIndex),@(dayIndex)];
-    if (self.datePickerStyle == DateStyleShowHourMinute)
-        indexArray = @[@(hourIndex),@(minuteIndex)];
-    if (self.datePickerStyle == DateStyleShowYear)
-        indexArray = @[@(yearIndex)];
-    if (self.datePickerStyle == DateStyleShowMonth)
-        indexArray = @[@(monthIndex)];
-    if (self.datePickerStyle == DateStyleShowDayHourMinute)
-        indexArray = @[@(dayIndex),@(hourIndex),@(minuteIndex)];
     
     self.showYearView.text = _yearArray[yearIndex];
     
