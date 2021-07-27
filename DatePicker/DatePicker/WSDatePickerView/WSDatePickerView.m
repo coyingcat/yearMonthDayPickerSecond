@@ -300,20 +300,18 @@ int minDay(void){
     return 3;
 }
 
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    NSArray *numberArr = [self getNumberOfRowsInComponent];
-    return [numberArr[component] integerValue];
+- (NSInteger) pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    switch (component) {
+        case 0:
+            return _yearArray.count;
+        case 1:
+            return _monthArray.count;
+        default:
+            return [self DaysfromYear:[_yearArray[yearIndex] integerValue] andMonth:[_monthArray[monthIndex] integerValue]];;
+    }
 }
 
--(NSArray *)getNumberOfRowsInComponent {
-    
-    NSInteger yearNum = _yearArray.count;
-    NSInteger monthNum = _monthArray.count;
-    NSInteger dayNum = [self DaysfromYear:[_yearArray[yearIndex] integerValue] andMonth:[_monthArray[monthIndex] integerValue]];
-    
-    return @[@(yearNum),@(monthNum),@(dayNum)];
-    
-}
+
 
 -(CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
     return 40;
