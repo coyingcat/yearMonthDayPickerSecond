@@ -41,6 +41,26 @@ int minYEAR(void){
 
 
 
+int minMonth(void){
+    
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MM"];
+    return [[formatter stringFromDate:[NSDate date]] intValue];
+    
+}
+
+
+int minDay(void){
+    
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"dd"];
+    return [[formatter stringFromDate:[NSDate date]] intValue];
+    
+}
+
+
 
 
 
@@ -542,7 +562,7 @@ int minYEAR(void){
             }
             if (component == 0 || component == 1){
                 [self DaysfromYear:[_yearArray[yearIndex] integerValue] andMonth:[_monthArray[monthIndex] integerValue]];
-                if (_dayArray.count-1<dayIndex) {
+                if (_dayArray.count-1 < dayIndex) {
                     dayIndex = _dayArray.count-1;
                 }
             }
@@ -654,7 +674,14 @@ int minYEAR(void){
     
     [pickerView reloadAllComponents];
     
-    NSString *dateStr = [NSString stringWithFormat:@"%@-%@-%@ %@:%@",_yearArray[yearIndex],_monthArray[monthIndex],_dayArray[dayIndex],_hourArray[hourIndex],_minuteArray[minuteIndex]];
+    
+    
+    
+    NSString *dateStr = [NSString stringWithFormat:@"%@-%@-%@ %@:%@", _yearArray[yearIndex], _monthArray[monthIndex], _dayArray[dayIndex], _hourArray[hourIndex], _minuteArray[minuteIndex]];
+    
+    
+    
+    
     switch (self.datePickerStyle) {
         case DateStyleShowYearMonthDay:
             dateStr = [NSString stringWithFormat:@"%@-%@-%@",_yearArray[yearIndex],_monthArray[monthIndex],_dayArray[dayIndex]];
@@ -794,22 +821,30 @@ int minYEAR(void){
     NSInteger num_year  = year;
     NSInteger num_month = month;
     
+    BOOL bullsEye = NO;
+    
+    
+    if (minYEAR() == year && minMonth() == month){
+        bullsEye = YES;
+    }
+    
+    
     BOOL isrunNian = num_year%4==0 ? (num_year%100==0? (num_year%400==0?YES:NO):YES):NO;
     switch (num_month) {
         case 1:case 3:case 5:case 7:case 8:case 10:case 12:{
-            [self setdayArray:31];
+            [self setdayArray:31 isCurrent: bullsEye];
             return 31;
         }
         case 4:case 6:case 9:case 11:{
-            [self setdayArray:30];
+            [self setdayArray:30 isCurrent: bullsEye];
             return 30;
         }
         case 2:{
             if (isrunNian) {
-                [self setdayArray:29];
+                [self setdayArray:29 isCurrent: bullsEye];
                 return 29;
             }else{
-                [self setdayArray:28];
+                [self setdayArray:28 isCurrent: bullsEye];
                 return 28;
             }
         }
@@ -819,14 +854,62 @@ int minYEAR(void){
     return 0;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //设置每月的天数数组
-- (void)setdayArray:(NSInteger)num
+- (void)setdayArray:(NSInteger)num isCurrent: (BOOL) bullsEye
 {
     [_dayArray removeAllObjects];
     for (int i=1; i<=num; i++) {
-        [_dayArray addObject:[NSString stringWithFormat:@"%02d",i]];
+        if (bullsEye){
+            
+            NSLog(@"ha ha ha ");
+        
+            if (minDay() < i){
+                [_dayArray addObject: [NSString stringWithFormat: @"%02d",  i]];
+            }
+        }
+        else{
+            [_dayArray addObject: [NSString stringWithFormat: @"%02d",  i]];
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //滚动到指定的时间位置
 - (void)getNowDate:(NSDate *)date animated:(BOOL)animated
