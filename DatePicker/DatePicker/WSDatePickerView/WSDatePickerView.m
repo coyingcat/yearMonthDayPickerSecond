@@ -21,10 +21,28 @@
 #define bottom_height (isiPhoneX ? 34.f : 10.f)
 
 
-#define MAXYEAR 2099
-#define MINYEAR 1900
+#define MAXYEAR 2030
+
 
 typedef void(^doneBlock)(NSDate *);
+
+
+
+
+int minYEAR(void){
+    
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"D"];
+    return [[formatter stringFromDate:[NSDate date]] intValue];
+    
+}
+
+
+
+
+
+
 
 @interface WSDatePickerView ()<UIPickerViewDelegate,UIPickerViewDataSource,UIGestureRecognizerDelegate> {
     //日期存储数组
@@ -205,7 +223,7 @@ typedef void(^doneBlock)(NSDate *);
     
     
     //循环滚动时需要用到
-    preRow = (self.scrollToDate.year-MINYEAR)*12+self.scrollToDate.month-1;
+    preRow = (self.scrollToDate.year- minYEAR() )*12+self.scrollToDate.month-1;
     
     //设置年月日时分数据
     _yearArray = [self setArray:_yearArray];
@@ -222,7 +240,7 @@ typedef void(^doneBlock)(NSDate *);
             [_hourArray addObject:num];
         [_minuteArray addObject:num];
     }
-    for (NSInteger i=MINYEAR; i<=MAXYEAR; i++) {
+    for (NSInteger i = minYEAR(); i<=MAXYEAR; i++) {
         NSString *num = [NSString stringWithFormat:@"%ld",(long)i];
         [_yearArray addObject:num];
     }
@@ -337,7 +355,7 @@ typedef void(^doneBlock)(NSDate *);
     NSInteger hourNum = _hourArray.count;
     NSInteger minuteNUm = _minuteArray.count;
     
-    NSInteger timeInterval = MAXYEAR - MINYEAR;
+    NSInteger timeInterval = MAXYEAR - minYEAR();
     
     switch (self.datePickerStyle) {
         case DateStyleShowYearMonthDayHourMinute:
@@ -784,14 +802,14 @@ typedef void(^doneBlock)(NSDate *);
     
     [self DaysfromYear:date.year andMonth:date.month];
     
-    yearIndex = date.year-MINYEAR;
+    yearIndex = date.year - minYEAR();
     monthIndex = date.month-1;
     dayIndex = date.day-1;
     hourIndex = date.hour;
     minuteIndex = date.minute;
     
     //循环滚动时需要用到
-    preRow = (self.scrollToDate.year-MINYEAR)*12+self.scrollToDate.month-1;
+    preRow = (self.scrollToDate.year - minYEAR())*12+self.scrollToDate.month-1;
     
     NSArray *indexArray;
     
@@ -820,7 +838,7 @@ typedef void(^doneBlock)(NSDate *);
     
     for (int i=0; i<indexArray.count; i++) {
         if ((self.datePickerStyle == DateStyleShowMonthDayHourMinute || self.datePickerStyle == DateStyleShowMonthDay)&& i==0) {
-            NSInteger mIndex = [indexArray[i] integerValue]+(12*(self.scrollToDate.year - MINYEAR));
+            NSInteger mIndex = [indexArray[i] integerValue] + ( 12*(self.scrollToDate.year - minYEAR() ));
             [self.datePicker selectRow:mIndex inComponent:i animated:animated];
         } else {
             [self.datePicker selectRow:[indexArray[i] integerValue] inComponent:i animated:animated];
