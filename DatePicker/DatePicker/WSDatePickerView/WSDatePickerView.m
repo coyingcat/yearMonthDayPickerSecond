@@ -33,7 +33,7 @@ int minYEAR(void){
     
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"D"];
+    [formatter setDateFormat:@"yyyy"];
     return [[formatter stringFromDate:[NSDate date]] intValue];
     
 }
@@ -508,6 +508,17 @@ int minYEAR(void){
     
 }
 
+
+
+
+
+
+
+
+
+
+
+
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     
@@ -689,6 +700,12 @@ int minYEAR(void){
     
 }
 
+
+
+
+
+
+
 -(void)yearChange:(NSInteger)row {
     
     monthIndex = row%12;
@@ -709,6 +726,11 @@ int minYEAR(void){
 }
 
 
+
+
+
+
+
 #pragma mark - UIGestureRecognizerDelegate
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
@@ -717,6 +739,11 @@ int minYEAR(void){
     }
     return YES;
 }
+
+
+
+
+
 
 
 
@@ -730,6 +757,14 @@ int minYEAR(void){
         [self layoutIfNeeded];
     }];
 }
+
+
+
+
+
+
+
+
 -(void)dismiss {
     [UIView animateWithDuration:.3 animations:^{
         self.bottomConstraint.constant = -self.height;
